@@ -8,7 +8,7 @@ import androidx.room.TypeConverters
 import com.example.newsapp.models.Article
 
 @Database(
-    entities = [Article::class], version = 1
+    entities = [Article::class], version = 2, exportSchema = false
 )
 @TypeConverters(Converters::class)
 abstract class ArticleDatabase : RoomDatabase() {
@@ -25,7 +25,8 @@ abstract class ArticleDatabase : RoomDatabase() {
         private fun createDatabase(context: Context) =
             Room.databaseBuilder(
                 context.applicationContext, ArticleDatabase::class.java, "article.dp.dp"
-            ).build()
+            ).fallbackToDestructiveMigration()
+                .build()
     }
 
 }
