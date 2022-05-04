@@ -7,14 +7,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.webkit.WebViewClient
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.navArgs
 import com.example.newsapp.R
 import com.example.newsapp.databinding.FragmentArticleNewsBinding
 
 import com.example.newsapp.ui.NewsActivity
 import com.example.newsapp.ui.NewsViewModel
-import com.google.android.material.snackbar.Snackbar
 
 class ArticleNewsFragment : Fragment(R.layout.fragment_article_news) {
     lateinit var viewModel: NewsViewModel
@@ -35,15 +33,10 @@ class ArticleNewsFragment : Fragment(R.layout.fragment_article_news) {
         val article = args.article
         binding.webView.apply {
             webViewClient = WebViewClient()
-            article.url?.let { loadUrl(it) }
+            loadUrl(article.url)
 
         }
-        binding.fab.setOnClickListener {
-            viewModel.saveArticle(article)
-            Snackbar.make(view, "Article Saved Successfully ", Snackbar.LENGTH_SHORT).show()
-        }
-
-
+        Log.d("here", article.toString())
 
     }
 }

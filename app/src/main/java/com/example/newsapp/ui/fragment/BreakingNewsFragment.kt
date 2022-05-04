@@ -44,7 +44,7 @@ class BreakingNewsFragment : Fragment(R.layout.fragment_breaking_news) {
                 putSerializable("article", it)
 
             }
-            findNavController().navigate(
+             findNavController().navigate(
                 R.id.action_breakingNewsFragment_to_articleNewsFragment,
                 bundle
             )
