@@ -1,9 +1,11 @@
 package com.example.newsapp.utill
 
 class Constants {
-    companion object{
+    companion object
+    {
         const val API_KEY="e99733a475814438953640cfb1ed5b52"
         const val BASE_URL="https://newsapi.org"
+        const val SEARCH_NEWS_TIME_DELAY=500L
 
     }
 }

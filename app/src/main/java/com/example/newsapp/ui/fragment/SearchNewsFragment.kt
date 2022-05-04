@@ -1,43 +1,76 @@
-package com.example.newsapp.ui.fragments
+package com.example.newsapp.ui.fragment
 
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
-import androidx.core.view.isInvisible
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.newsapp.R
 import com.example.newsapp.adapters.NewsAdapter
-import com.example.newsapp.databinding.FragmentBreakingNewsBinding
+
+import com.example.newsapp.databinding.FragmentSearchNewsBinding
 import com.example.newsapp.ui.NewsActivity
 import com.example.newsapp.ui.NewsViewModel
+import com.example.newsapp.utill.Constants.Companion.SEARCH_NEWS_TIME_DELAY
 import com.example.newsapp.utill.Resource
-import kotlin.math.log
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
-class BreakingNewsFragment : Fragment(R.layout.fragment_breaking_news) {
+class SearchNewsFragment : Fragment(R.layout.fragment_search_news) {
     lateinit var viewModel: NewsViewModel
-    lateinit var binding: FragmentBreakingNewsBinding
+    lateinit var binding: FragmentSearchNewsBinding
     lateinit var newsAdapter: NewsAdapter
-    val TAG = "BreakingNewsFragment"
+    val TAG = "searchNewsFragment"
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentBreakingNewsBinding.inflate(inflater, container, false)
+        binding = FragmentSearchNewsBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel = (activity as NewsActivity).viewModel
+
         setupRecyclerView()
-        viewModel.breakingNews.observe(viewLifecycleOwner, Observer { response ->
+        newsAdapter.setOnItemClickListener {
+            val bundle = Bundle().apply {
+                putSerializable("article", it)
+
+            }
+            findNavController().navigate(
+                R.id.action_searchNewsFragment_to_articleNewsFragment,
+                bundle
+            )
+        }
+        var job: Job? = null
+        binding.etSearch.addTextChangedListener { editable ->
+            job?.cancel()
+            job = MainScope().launch {
+                delay(SEARCH_NEWS_TIME_DELAY)
+
+                editable?.let {
+                    if (editable.toString().isNotEmpty())
+                        viewModel.SearchNews(editable.toString())
+
+                }
+            }
+
+
+        }
+
+        viewModel.searchNews.observe(viewLifecycleOwner, Observer { response ->
             when (response) {
                 is Resource.Success -> {
                     hideProgressBar()
@@ -52,13 +85,12 @@ class BreakingNewsFragment : Fragment(R.layout.fragment_breaking_news) {
 
                     }
                 }
-                is Resource.Loading->{
+                is Resource.Loading -> {
                     showProgressBar()
                 }
             }
 
         })
-
     }
 
     private fun hideProgressBar() {
@@ -71,7 +103,7 @@ class BreakingNewsFragment : Fragment(R.layout.fragment_breaking_news) {
 
     fun setupRecyclerView() {
         newsAdapter = NewsAdapter()
-        binding.rvBreakingNews.apply {
+        binding.rvSearchNews.apply {
             adapter = newsAdapter
             layoutManager = LinearLayoutManager(activity)
         }

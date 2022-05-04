@@ -1,10 +1,15 @@
 package com.example.newsapp.adapters
 
+import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment.Companion.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -15,6 +20,7 @@ import com.example.newsapp.models.Article
 
 
 class NewsAdapter : RecyclerView.Adapter<NewsAdapter.ArticleViewHolder>() {
+
 
     inner class ArticleViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var ivArticleImage: ImageView = itemView.findViewById(R.id.ivArticleImage)
@@ -56,8 +62,10 @@ class NewsAdapter : RecyclerView.Adapter<NewsAdapter.ArticleViewHolder>() {
             setOnClickListener {
                 onClickItemListener?.let { it(article) }
             }
+
         }
     }
+
 
     override fun getItemCount(): Int {
         return differ.currentList.size
