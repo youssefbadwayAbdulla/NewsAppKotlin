@@ -33,7 +33,7 @@ class ArticleNewsFragment : Fragment(R.layout.fragment_article_news) {
         val article = args.article
         binding.webView.apply {
             webViewClient = WebViewClient()
-            loadUrl(article.url)
+            loadUrl(article.url?:"")
 
         }
         Log.d("here", article.toString())
