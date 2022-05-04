@@ -1,6 +1,7 @@
 package com.example.newsapp.ui.fragment
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -44,6 +45,7 @@ class SavedNewsFragment : Fragment(R.layout.fragment_saved_news) {
                 R.id.action_savedNewsFragment_to_articleNewsFragment,
                 bundle
             )
+            Log.d("her", bundle.toString())
         }
     }
 

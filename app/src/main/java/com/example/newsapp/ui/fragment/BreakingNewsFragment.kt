@@ -17,6 +17,7 @@ import com.example.newsapp.models.Source
 import com.example.newsapp.ui.NewsActivity
 import com.example.newsapp.ui.NewsViewModel
 import com.example.newsapp.utill.Resource
+import kotlin.math.log
 
 class BreakingNewsFragment : Fragment(R.layout.fragment_breaking_news) {
     lateinit var viewModel: NewsViewModel
@@ -47,6 +48,7 @@ class BreakingNewsFragment : Fragment(R.layout.fragment_breaking_news) {
                 R.id.action_breakingNewsFragment_to_articleNewsFragment,
                 bundle
             )
+            Log.d("here",bundle.toString())
 
         }
         viewModel.breakingNews.observe(viewLifecycleOwner, Observer { response ->
